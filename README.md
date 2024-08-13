@@ -4,9 +4,9 @@ This Library make Structure Easier in Better Than Adventure(Minecraft Beta 1.7.3
 
 when structure you want save. you should use those comand
 
-/structure_lib save <modid> <name> <x> <y> <z> <maxX> <maxY> <maxZ>
+/structure_lib save modid name x y z maxX maxY maxZ
 
-once saved place /assets/<modid>/structure
+once saved place /assets/modid/structure
 
 and
 
