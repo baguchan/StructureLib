@@ -1,6 +1,5 @@
 package baguchan.structure_lib;
 
-import baguchan.structure_lib.util.RevampeStructure;
 import baguchan.structure_lib.util.StructureUtils;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.net.command.Command;
@@ -20,10 +19,6 @@ public class StructureSaveCommand extends Command {
 		}
 		if (commandSender instanceof PlayerCommandSender) {
 			EntityPlayer player = commandSender.getPlayer();
-			if (args.length == 0) {
-				RevampeStructure revampeStructure = new RevampeStructure(StructureLib.MOD_ID, new Class[]{}, "test", "test", true, true);
-				revampeStructure.placeStructure(player.world, (int) player.x, (int) player.y, (int) player.z);
-			}
 			if (args.length > 0) {
 
 
