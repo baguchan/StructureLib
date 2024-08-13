@@ -1,12 +1,11 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+	"id": "structure_lib",
   "version": "${version}",
-
-  "name": "Example Mod",
+	"name": "Structure Lib",
   "description": "This mod aims to help new BTA modders.",
   "authors": [
-    "Turnip Labs"
+		"bagu_chan"
   ],
   "contact": {
     "homepage": "",
@@ -19,25 +18,26 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-			"turniplabs.examplemod.ExampleMod"
+			"baguchan.structure_lib.StructureLib"
     ],
 		"beforeGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"baguchan.structure_lib.StructureLib"
 		],
 		"afterGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"baguchan.structure_lib.StructureLib"
 		],
 		"recipesReady": [
-			"turniplabs.examplemod.ExampleMod"
+			"baguchan.structure_lib.StructureLib"
 		]
 	},
   "mixins": [
-      "examplemod.mixins.json"
+		"structure_lib.mixins.json"
   ],
 
   "depends": {
-		"minecraft": "~7.1",
-    "fabricloader": ">=0.15.5"
+		"minecraft": ">=7.2.1",
+		"fabricloader": ">=0.15.5",
+		"catalyst-multiblocks": ">=1.1.3-7.2"
   },
   "suggests": {
   }
