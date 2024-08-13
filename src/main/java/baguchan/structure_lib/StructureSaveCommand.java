@@ -47,7 +47,7 @@ public class StructureSaveCommand extends Command {
 
 	public void sendCommandSyntax(CommandHandler commandHandler, CommandSender commandSender) {
 		if (commandSender instanceof PlayerCommandSender) {
-			commandSender.sendMessage("/structure_lib save <modid> <name> <placeAir<Boolean>> <replaceBlocks<Boolean>> <x> <y> <z> <maxX> <maxY> <maxZ>");
+			commandSender.sendMessage("/structure_lib save <modid> <name> <x> <y> <z> <maxX> <maxY> <maxZ>");
 		}
 	}
 }
