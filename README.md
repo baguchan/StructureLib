@@ -2,6 +2,8 @@
 
 This Library make Structure Easier in Better Than Adventure(Minecraft Beta 1.7.3 mod)
 
+This mod is based from catalyst(https://modrinth.com/mod/catalyst) mod's multipart blocks
+
 when structure you want save. you should use those comand
 
 /structure_lib save modid name x y z maxX maxY maxZ
@@ -13,13 +15,11 @@ and
 use like this
 `
 
-    RevampeStructure revampeStructure = new RevampeStructure(StructureLib.MOD_ID, new Class[]{}, "test", "test", true, true);
-    revampeStructure.placeStructure(world, x, y, z);
+    RevampeStructure revampStructure = new RevampeStructure(StructureLib.MOD_ID, "test", "test", true, true);
+    revampStructure.placeStructure(world, x, y, z);
 
 `
 
 ## Required Mod
 
 halplibe(https://modrinth.com/mod/halplibe)
-
-catalyst(https://modrinth.com/mod/catalyst)

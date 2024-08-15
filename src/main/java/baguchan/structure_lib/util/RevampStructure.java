@@ -4,24 +4,35 @@ import com.mojang.nbt.*;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.entity.TileEntity;
 import net.minecraft.core.world.World;
-import sunsetsatellite.catalyst.CatalystMultiblocks;
-import sunsetsatellite.catalyst.core.util.BlockInstance;
-import sunsetsatellite.catalyst.core.util.Direction;
-import sunsetsatellite.catalyst.core.util.Vec3i;
-import sunsetsatellite.catalyst.multiblocks.Structure;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class RevampeStructure extends Structure {
-	public RevampeStructure(String modId, Class<?>[] modClasses, String translateKey, CompoundTag data, boolean placeAir, boolean replaceBlocks) {
-		super(modId, modClasses, translateKey, data, placeAir, replaceBlocks);
+public class RevampStructure {
+	public String modId;
+	public String translateKey;
+	public String filePath;
+	public CompoundTag data;
+	public boolean placeAir;
+	public boolean replaceBlocks;
+
+	public RevampStructure(String modId, String translateKey, CompoundTag data, boolean placeAir, boolean replaceBlocks) {
+		this.modId = modId;
+		this.translateKey = "structure." + modId + "." + translateKey + ".name";
+		this.data = data;
+		this.filePath = null;
+		this.placeAir = placeAir;
+		this.replaceBlocks = replaceBlocks;
 	}
 
-	public RevampeStructure(String modId, Class<?>[] modClasses, String translateKey, String filePath, boolean placeAir, boolean replaceBlocks) {
-		super(modId, modClasses, translateKey, filePath, placeAir, replaceBlocks);
+	public RevampStructure(String modId, String translateKey, String filePath, boolean placeAir, boolean replaceBlocks) {
+		this.modId = modId;
+		this.translateKey = "structure." + modId + "." + translateKey + ".name";
+		this.placeAir = placeAir;
+		this.replaceBlocks = replaceBlocks;
+		this.loadFromNBT(filePath);
 	}
 
 	public boolean placeStructure(World world, int originX, int originY, int originZ) {
@@ -331,7 +342,6 @@ public class RevampeStructure extends Structure {
 			try {
 				if (resource != null) {
 					this.data = NbtIo.readCompressed(resource);
-					CatalystMultiblocks.LOGGER.info(String.format("Structure '%s' contains %d blocks.", name, this.data.getList("Blocks").tagCount()));
 				}
 			} catch (Throwable var6) {
 				if (resource != null) {

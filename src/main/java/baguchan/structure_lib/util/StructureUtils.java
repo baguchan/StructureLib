@@ -7,9 +7,6 @@ import com.mojang.nbt.NbtIo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.world.World;
-import sunsetsatellite.catalyst.core.util.BlockInstance;
-import sunsetsatellite.catalyst.core.util.Vec3i;
-import sunsetsatellite.catalyst.multiblocks.Structure;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +44,7 @@ public class StructureUtils {
 		});
 		compoundTag.put("Blocks", blocksTag);
 		compoundTag.put("TileEntities", tileTag);
-		RevampeStructure structure = new RevampeStructure(modid, new Class[]{}, name, compoundTag, false, true);
+		RevampStructure structure = new RevampStructure(modid, name, compoundTag, false, true);
 		saveToNbt(Minecraft.getMinecraft(Minecraft.class).getMinecraftDir(), name, structure);
 	}
 
@@ -68,11 +65,11 @@ public class StructureUtils {
 		return list;
 	}
 
-	public static void saveToNbt(Minecraft minecraft, String name, Structure structure) {
+	public static void saveToNbt(Minecraft minecraft, String name, RevampStructure structure) {
 		saveToNbt(minecraft.getMinecraftDir(), name, structure);
 	}
 
-	public static void saveToNbt(File directory, String name, Structure structure) {
+	public static void saveToNbt(File directory, String name, RevampStructure structure) {
 		try {
 
 			File dir = new File(directory, name + ".nbt");
