@@ -63,12 +63,15 @@ public class RevampStructure {
 			tileBlocks = (BlockInstance) var8.next();
 			world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
 
-			TileEntity tileentity = TileEntity.createAndLoadEntity(getTileEntitiesData(i));
-			if (tileentity != null) {
-				tileentity.x = tileBlocks.pos.x;
-				tileentity.y = tileBlocks.pos.y;
-				tileentity.z = tileBlocks.pos.z;
-				world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
+			CompoundTag compoundTag = getTileEntitiesData(i);
+			if (compoundTag.containsKey("id")) {
+				TileEntity tileentity = TileEntity.createAndLoadEntity(compoundTag);
+				if (tileentity != null) {
+					tileentity.x = tileBlocks.pos.x;
+					tileentity.y = tileBlocks.pos.y;
+					tileentity.z = tileBlocks.pos.z;
+					world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
+				}
 			}
 			i++;
 		}
@@ -106,12 +109,15 @@ public class RevampStructure {
 				tileBlocks = (BlockInstance) var8.next();
 				world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
 
-				TileEntity tileentity = TileEntity.createAndLoadEntity(getTileEntitiesData(i));
-				if (tileentity != null) {
-					tileentity.x = tileBlocks.pos.x;
-					tileentity.y = tileBlocks.pos.y;
-					tileentity.z = tileBlocks.pos.z;
-					world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
+				CompoundTag compoundTag = getTileEntitiesData(i);
+				if (compoundTag.containsKey("id")) {
+					TileEntity tileentity = TileEntity.createAndLoadEntity(compoundTag);
+					if (tileentity != null) {
+						tileentity.x = tileBlocks.pos.x;
+						tileentity.y = tileBlocks.pos.y;
+						tileentity.z = tileBlocks.pos.z;
+						world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
+					}
 				}
 				i++;
 			}
