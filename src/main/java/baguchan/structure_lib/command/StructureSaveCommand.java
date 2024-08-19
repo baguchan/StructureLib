@@ -25,8 +25,11 @@ public class StructureSaveCommand extends Command {
 				if (args.length == 9 && args[0].equals("save")) {
 
 					try {
-						StructureUtils.saveStructure(player.world, args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5]), Integer.parseInt(args[6]), Integer.parseInt(args[7]), Integer.parseInt(args[8]));
-						commandSender.sendMessage(String.format("Structure '%s' saved!", args[2]));
+						if (StructureUtils.saveStructure(player.world, args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5]), Integer.parseInt(args[6]), Integer.parseInt(args[7]), Integer.parseInt(args[8]))) {
+							commandSender.sendMessage(String.format("Structure '%s' saved!", args[2]));
+						} else {
+							commandSender.sendMessage(String.format("Structure '%s' is Too big than 40 range", args[2]));
+						}
 
 
 						return true;

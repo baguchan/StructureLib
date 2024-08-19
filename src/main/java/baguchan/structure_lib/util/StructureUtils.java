@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StructureUtils {
-	public static void saveStructure(World world, String modid, String name, int originX, int originY, int originZ, int maxX, int maxY, int maxZ) {
+	public static boolean saveStructure(World world, String modid, String name, int originX, int originY, int originZ, int maxX, int maxY, int maxZ) {
 		CompoundTag compoundTag = new CompoundTag();
 		int temp;
 		if (originX > maxX) {
@@ -38,6 +38,17 @@ public class StructureUtils {
 
 		Vec3i origin = new Vec3i(originX, originY, originZ);
 		Vec3i originMax = new Vec3i(maxX, maxY, maxZ);
+		if (MathHelper.abs(originMax.x - origin.x) > 40) {
+			return false;
+		}
+		if (MathHelper.abs(originMax.y - origin.y) > 40) {
+			return false;
+		}
+		if (MathHelper.abs(originMax.z - origin.z) > 40) {
+			return false;
+		}
+
+
 		List<BlockInstance> blocks = addBlocks(world, origin, originMax);
 		ListTag blocksTag = new ListTag();
 		ListTag tileTag = new ListTag();
@@ -70,6 +81,7 @@ public class StructureUtils {
 		compoundTag.putInt("SizeZ", (int) MathHelper.abs(originMax.z - origin.z));
 		RevampStructure structure = new RevampStructure(modid, name, compoundTag, false, true);
 		saveToNbt(Minecraft.getMinecraft(Minecraft.class).getMinecraftDir(), name, structure);
+		return true;
 	}
 
 	private static List<BlockInstance> addBlocks(World world, Vec3i origin, Vec3i originMax) {
