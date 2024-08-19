@@ -102,6 +102,9 @@ public class RevampStructure {
 				world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
 
 				TileEntity tileentity = TileEntity.createAndLoadEntity(getTileEntitiesData(tiles.indexOf(tileBlocks)));
+				tileentity.x = tileBlocks.pos.x;
+				tileentity.y = tileBlocks.pos.y;
+				tileentity.z = tileBlocks.pos.z;
 				world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
 
 			}
