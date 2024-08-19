@@ -258,6 +258,30 @@ public class RevampStructure {
 		return tiles;
 	}
 
+	public int getSizeX() {
+		if (this.data.containsKey("SizeX")) {
+			return this.data.getInteger("SizeX");
+		}
+
+		return 0;
+	}
+
+	public int getSizeY() {
+		if (this.data.containsKey("SizeY")) {
+			return this.data.getInteger("SizeY");
+		}
+
+		return 0;
+	}
+
+	public int getSizeZ() {
+		if (this.data.containsKey("SizeZ")) {
+			return this.data.getInteger("SizeZ");
+		}
+
+		return 0;
+	}
+
 	public ArrayList<BlockInstance> getSubstitutions() {
 		ArrayList<BlockInstance> tiles = new ArrayList();
 		Iterator var2 = this.data.getCompound("Substitutions").getValues().iterator();

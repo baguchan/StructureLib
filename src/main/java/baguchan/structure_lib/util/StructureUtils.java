@@ -6,6 +6,7 @@ import com.mojang.nbt.ListTag;
 import com.mojang.nbt.NbtIo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.block.Block;
+import net.minecraft.core.util.helper.MathHelper;
 import net.minecraft.core.world.World;
 
 import java.io.File;
@@ -18,6 +19,23 @@ import java.util.List;
 public class StructureUtils {
 	public static void saveStructure(World world, String modid, String name, int originX, int originY, int originZ, int maxX, int maxY, int maxZ) {
 		CompoundTag compoundTag = new CompoundTag();
+		int temp;
+		if (originX > maxX) {
+			temp = originX;
+			originX = maxX;
+			maxX = temp;
+		}
+		if (originY > maxY) {
+			temp = originY;
+			originY = maxY;
+			maxY = temp;
+		}
+		if (originZ > maxZ) {
+			temp = originZ;
+			originZ = maxZ;
+			maxZ = temp;
+		}
+
 		Vec3i origin = new Vec3i(originX, originY, originZ);
 		Vec3i originMax = new Vec3i(maxX, maxY, maxZ);
 		List<BlockInstance> blocks = addBlocks(world, origin, originMax);
@@ -44,6 +62,9 @@ public class StructureUtils {
 		});
 		compoundTag.put("Blocks", blocksTag);
 		compoundTag.put("TileEntities", tileTag);
+		compoundTag.putInt("SizeX", (int) MathHelper.abs(originMax.x - origin.x));
+		compoundTag.putInt("SizeY", (int) MathHelper.abs(originMax.y - origin.y));
+		compoundTag.putInt("SizeZ", (int) MathHelper.abs(originMax.z - origin.z));
 		RevampStructure structure = new RevampStructure(modid, name, compoundTag, false, true);
 		saveToNbt(Minecraft.getMinecraft(Minecraft.class).getMinecraftDir(), name, structure);
 	}
