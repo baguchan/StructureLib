@@ -45,10 +45,13 @@ public class StructureUtils {
 			if (blockInstance.tile != null) {
 				CompoundTag compoundTag1 = new CompoundTag();
 				CompoundTag posTag = new CompoundTag();
+				CompoundTag tileData = new CompoundTag();
+				blockInstance.tile.writeToNBT(tileData);
 				blockInstance.pos.writeToNBT(posTag);
 				compoundTag1.putString("id", blockInstance.block.getKey());
 				compoundTag1.putInt("meta", blockInstance.meta);
 				compoundTag1.put("pos", posTag);
+				compoundTag1.put("tile_data", tileData);
 				tileTag.addTag(compoundTag1);
 			} else {
 				CompoundTag compoundTag1 = new CompoundTag();

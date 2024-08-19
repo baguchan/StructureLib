@@ -37,22 +37,33 @@ public class RevampStructure {
 
 	public boolean placeStructure(World world, int originX, int originY, int originZ) {
 		Vec3i origin = new Vec3i(originX, originY, originZ);
+		Vec3i originSize = new Vec3i(originX + this.getSizeX(), originY + this.getSizeY(), originZ + this.getSizeZ());
 		ArrayList<BlockInstance> blocks = this.getBlocks(origin);
 		Iterator var7 = blocks.iterator();
 
 		BlockInstance block;
-		while (var7.hasNext()) {
-			block = (BlockInstance) var7.next();
-			if (!this.replaceBlocks && world.getBlockId(block.pos.x, block.pos.y, block.pos.z) != 0) {
-				return false;
-			}
-		}
 
-		var7 = blocks.iterator();
+		if (this.replaceBlocks) {
+			makeEmptySpaceWithRotate(world, origin, originSize);
+		}
 
 		while (var7.hasNext()) {
 			block = (BlockInstance) var7.next();
 			world.setBlockAndMetadataWithNotify(block.pos.x, block.pos.y, block.pos.z, block.block.id, block.meta);
+		}
+
+		ArrayList<BlockInstance> tiles = this.getTileEntities(origin);
+
+		Iterator var8 = tiles.iterator();
+
+		BlockInstance tileBlocks;
+
+		while (var8.hasNext()) {
+			tileBlocks = (BlockInstance) var8.next();
+			world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
+			TileEntity tileentity = world.getBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z);
+
+			tileentity.readFromNBT(getTileEntitiesData(tiles.indexOf(tileBlocks)));
 		}
 
 		return true;
@@ -65,26 +76,64 @@ public class RevampStructure {
 		} else {
 			Vec3i origin = new Vec3i(originX, originY, originZ);
 			ArrayList<BlockInstance> blocks = this.getBlocks(origin, dir);
-			Iterator var9 = blocks.iterator();
+			Iterator var7 = blocks.iterator();
+			Vec3i rotate = (new Vec3i(this.getSizeX(), this.getSizeY(), this.getSizeZ()).rotate(origin, dir));
+			if (this.replaceBlocks) {
+				this.makeEmptySpaceWithRotate(world, origin, rotate);
+			}
 
 			BlockInstance block;
-			do {
-				if (!var9.hasNext()) {
-					var9 = blocks.iterator();
+			while (var7.hasNext()) {
+				block = (BlockInstance) var7.next();
+				world.setBlockAndMetadataWithNotify(block.pos.x, block.pos.y, block.pos.z, block.block.id, block.meta);
+			}
 
-					while (var9.hasNext()) {
-						block = (BlockInstance) var9.next();
-						world.setBlockAndMetadataWithNotify(block.pos.x, block.pos.y, block.pos.z, block.block.id, block.meta == -1 ? 0 : block.meta);
-					}
+			ArrayList<BlockInstance> tiles = this.getTileEntities(world, origin, dir);
 
-					return true;
-				}
+			Iterator var8 = tiles.iterator();
 
-				block = (BlockInstance) var9.next();
-			} while (this.replaceBlocks || world.getBlockId(block.pos.x, block.pos.y, block.pos.z) == 0);
+			BlockInstance tileBlocks;
 
+			while (var8.hasNext()) {
+				tileBlocks = (BlockInstance) var8.next();
+				world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
+				TileEntity tileentity = world.getBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z);
+
+				tileentity.readFromNBT(getTileEntitiesData(tiles.indexOf(tileBlocks)));
+			}
 			return false;
 		}
+	}
+
+
+	private void makeEmptySpaceWithRotate(World world, Vec3i origin, Vec3i rotate) {
+		Vec3i origin2 = origin.copy();
+		Vec3i rotate2 = rotate.copy();
+
+		int temp;
+		if (origin2.x > rotate2.x) {
+			temp = origin2.x;
+			origin2.x = rotate2.x;
+			rotate2.x = temp;
+		}
+		if (origin2.y > rotate2.y) {
+			temp = origin2.y;
+			origin2.y = rotate2.y;
+			rotate2.y = temp;
+		}
+		if (origin2.z > rotate2.z) {
+			temp = origin2.z;
+			origin2.z = rotate2.z;
+			rotate2.z = temp;
+		}
+		for (int x = origin2.x; x <= rotate2.x; x++) {
+			for (int y = origin2.y; y <= rotate2.y; y++) {
+				for (int z = origin2.z; z <= rotate2.z; z++) {
+					world.setBlock(x, y, z, 0);
+				}
+			}
+		}
+
 	}
 
 	public BlockInstance getOrigin() {
@@ -110,6 +159,17 @@ public class RevampStructure {
 		int id = getBlockId(blockTag);
 		Block block = Block.getBlock(id);
 		return new BlockInstance(block, pos, meta, world.getBlockTileEntity(pos.x, pos.y, pos.z));
+	}
+
+	public CompoundTag getTileEntitiesData(int index) {
+		Tag<?> tag = this.data.getList("TileEntities").tagAt(index);
+
+		if (tag != null) {
+			CompoundTag tileEntity = (CompoundTag) tag;
+			return tileEntity.getCompound("tile_data");
+		}
+
+		return new CompoundTag();
 	}
 
 	public ArrayList<BlockInstance> getTileEntities() {
