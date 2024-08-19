@@ -58,12 +58,15 @@ public class RevampStructure {
 
 		BlockInstance tileBlocks;
 
+		int i = 0;
+
 		while (var8.hasNext()) {
 			tileBlocks = (BlockInstance) var8.next();
 			world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
 			TileEntity tileentity = world.getBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z);
 
-			tileentity.readFromNBT(getTileEntitiesData(tiles.indexOf(tileBlocks)));
+			tileentity.readFromNBT(getTileEntitiesData(i));
+			i++;
 		}
 
 		return true;
@@ -162,11 +165,11 @@ public class RevampStructure {
 	}
 
 	public CompoundTag getTileEntitiesData(int index) {
-		Tag<?> tag = this.data.getList("TileEntities").tagAt(index);
+		ListTag tag = this.data.getList("TileEntities");
 
-		if (tag != null) {
-			CompoundTag tileEntity = (CompoundTag) tag;
-			return tileEntity.getCompound("tile_data");
+		if (tag.tagCount() > 0 && tag.tagAt(index) != null) {
+			CompoundTag nbttagcompound = (CompoundTag) tag.tagAt(index);
+			return nbttagcompound.getCompound("tile_data");
 		}
 
 		return new CompoundTag();
