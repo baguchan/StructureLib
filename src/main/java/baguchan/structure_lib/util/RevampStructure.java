@@ -64,11 +64,12 @@ public class RevampStructure {
 			world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
 
 			TileEntity tileentity = TileEntity.createAndLoadEntity(getTileEntitiesData(i));
-			tileentity.x = tileBlocks.pos.x;
-			tileentity.y = tileBlocks.pos.y;
-			tileentity.z = tileBlocks.pos.z;
-			world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
-
+			if (tileentity != null) {
+				tileentity.x = tileBlocks.pos.x;
+				tileentity.y = tileBlocks.pos.y;
+				tileentity.z = tileBlocks.pos.z;
+				world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
+			}
 			i++;
 		}
 
@@ -106,11 +107,12 @@ public class RevampStructure {
 				world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
 
 				TileEntity tileentity = TileEntity.createAndLoadEntity(getTileEntitiesData(i));
-				tileentity.x = tileBlocks.pos.x;
-				tileentity.y = tileBlocks.pos.y;
-				tileentity.z = tileBlocks.pos.z;
-				world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
-
+				if (tileentity != null) {
+					tileentity.x = tileBlocks.pos.x;
+					tileentity.y = tileBlocks.pos.y;
+					tileentity.z = tileBlocks.pos.z;
+					world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
+				}
 				i++;
 			}
 			return false;
