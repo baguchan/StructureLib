@@ -100,9 +100,10 @@ public class RevampStructure {
 			while (var8.hasNext()) {
 				tileBlocks = (BlockInstance) var8.next();
 				world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
-				TileEntity tileentity = world.getBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z);
 
-				tileentity.readFromNBT(getTileEntitiesData(tiles.indexOf(tileBlocks)));
+				TileEntity tileentity = TileEntity.createAndLoadEntity(getTileEntitiesData(tiles.indexOf(tileBlocks)));
+				world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
+
 			}
 			return false;
 		}
