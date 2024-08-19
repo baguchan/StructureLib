@@ -1,4 +1,4 @@
-package baguchan.structure_lib;
+package baguchan.structure_lib.command;
 
 import baguchan.structure_lib.util.StructureUtils;
 import net.minecraft.core.entity.player.EntityPlayer;

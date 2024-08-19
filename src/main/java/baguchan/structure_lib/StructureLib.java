@@ -1,5 +1,6 @@
 package baguchan.structure_lib;
 
+import baguchan.structure_lib.command.StructureSaveCommand;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
