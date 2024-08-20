@@ -76,9 +76,9 @@ public class StructureUtils {
 		});
 		compoundTag.put("Blocks", blocksTag);
 		compoundTag.put("TileEntities", tileTag);
-		compoundTag.putInt("SizeX", (int) MathHelper.abs(originMax.x - origin.x));
-		compoundTag.putInt("SizeY", (int) MathHelper.abs(originMax.y - origin.y));
-		compoundTag.putInt("SizeZ", (int) MathHelper.abs(originMax.z - origin.z));
+		compoundTag.putInt("SizeX", (int) MathHelper.abs(originMax.x - origin.x) + 1);
+		compoundTag.putInt("SizeY", (int) MathHelper.abs(originMax.y - origin.y) + 1);
+		compoundTag.putInt("SizeZ", (int) MathHelper.abs(originMax.z - origin.z) + 1);
 		RevampStructure structure = new RevampStructure(modid, name, compoundTag, false, true);
 		saveToNbt(Minecraft.getMinecraft(Minecraft.class).getMinecraftDir(), name, structure);
 		return true;
@@ -138,4 +138,24 @@ public class StructureUtils {
 
 	}
 
+
+	public static Vec3i transform(Vec3i pos, Rotation direction, Vec3i pivot) {
+		double d0 = pos.x;
+		double d1 = pos.y;
+		double d2 = pos.z;
+		boolean flag = false;
+
+		int i = pivot.x;
+		int j = pivot.z;
+		switch (direction) {
+			case COUNTERCLOCKWISE_90:
+				return new Vec3i((int) ((i - j) + d2), (int) d1, (int) ((i + j + 1) - d0));
+			case CLOCKWISE_90:
+				return new Vec3i((int) ((i + j + 1) - d2), (int) d1, (int) ((j - i) + d0));
+			case CLOCKWISE_180:
+				return new Vec3i((int) ((i + i + 1) - d0), (int) d1, (int) ((j + j + 1) - d2));
+			default:
+				return flag ? new Vec3i((int) d0, (int) d1, (int) d2) : pos;
+		}
+	}
 }
