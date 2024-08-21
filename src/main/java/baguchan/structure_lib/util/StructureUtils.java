@@ -139,23 +139,24 @@ public class StructureUtils {
 	}
 
 
-	public static Vec3i transform(Vec3i pos, Rotation direction, Vec3i pivot) {
-		double d0 = pos.x;
-		double d1 = pos.y;
-		double d2 = pos.z;
+	public static Vec3i transform(Vec3i p_74594_, Direction p_74596_, Vec3i p_74597_) {
+		int i = p_74594_.x;
+		int j = p_74594_.y;
+		int k = p_74594_.z;
 		boolean flag = false;
 
-		int i = pivot.x;
-		int j = pivot.z;
-		switch (direction) {
-			case COUNTERCLOCKWISE_90:
-				return new Vec3i((int) ((i - j) + d2), (int) d1, (int) ((i + j + 1) - d0));
-			case CLOCKWISE_90:
-				return new Vec3i((int) ((i + j + 1) - d2), (int) d1, (int) ((j - i) + d0));
-			case CLOCKWISE_180:
-				return new Vec3i((int) ((i + i + 1) - d0), (int) d1, (int) ((j + j + 1) - d2));
+		int l = p_74597_.x;
+		int i1 = p_74597_.z;
+		switch (Direction.getOriginalDirection(p_74596_)) {
+			case WEST:
+				return new Vec3i(l - i1 + k, j, l + i1 - i);
+			case EAST:
+				return new Vec3i(l + i1 - k, j, i1 - l + i);
+			case SOUTH:
+				return new Vec3i(l + l - i, j, i1 + i1 - k);
 			default:
-				return flag ? new Vec3i((int) d0, (int) d1, (int) d2) : pos;
+				return flag ? new Vec3i(i, j, k) : p_74594_;
 		}
 	}
+
 }

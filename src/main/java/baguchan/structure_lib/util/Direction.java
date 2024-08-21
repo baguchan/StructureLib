@@ -122,6 +122,21 @@ public enum Direction {
 		return Vec3d.createVectorHelper(vec.x, vec.y, vec.z);
 	}
 
+	public static net.minecraft.core.util.helper.Direction getOriginalDirection(Direction direction) {
+		switch (direction) {
+			case Z_NEG:
+				return net.minecraft.core.util.helper.Direction.NORTH;
+			case Z_POS:
+				return net.minecraft.core.util.helper.Direction.SOUTH;
+			case X_NEG:
+				return net.minecraft.core.util.helper.Direction.WEST;
+			case X_POS:
+				return net.minecraft.core.util.helper.Direction.EAST;
+			default:
+				return net.minecraft.core.util.helper.Direction.NONE;
+		}
+	}
+
 	static {
 		X_POS.opposite = X_NEG;
 		X_NEG.opposite = X_POS;
