@@ -3,7 +3,6 @@ package baguchan.structure_lib.util;
 import com.mojang.nbt.*;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.entity.TileEntity;
-import net.minecraft.core.util.helper.MathHelper;
 import net.minecraft.core.world.World;
 
 import java.io.IOException;
@@ -64,7 +63,7 @@ public class RevampStructure {
 			tileBlocks = (BlockInstance) var8.next();
 			world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
 
-			CompoundTag compoundTag = getTileEntitiesData(MathHelper.clamp(i, 0, tiles.size() - 1));
+			CompoundTag compoundTag = getTileEntitiesData(i);
 			if (compoundTag.containsKey("id")) {
 				TileEntity tileentity = TileEntity.createAndLoadEntity(compoundTag);
 				if (tileentity != null) {
@@ -74,9 +73,7 @@ public class RevampStructure {
 					world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
 				}
 			}
-			if (var8.hasNext()) {
 			i++;
-			}
 		}
 
 		return true;
@@ -112,7 +109,7 @@ public class RevampStructure {
 				tileBlocks = (BlockInstance) var8.next();
 				world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
 
-				CompoundTag compoundTag = getTileEntitiesData(MathHelper.clamp(i, 0, tiles.size() - 1));
+				CompoundTag compoundTag = getTileEntitiesData(i);
 				if (compoundTag.containsKey("id")) {
 					TileEntity tileentity = TileEntity.createAndLoadEntity(compoundTag);
 					if (tileentity != null) {
@@ -122,9 +119,7 @@ public class RevampStructure {
 						world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
 					}
 				}
-				if (var8.hasNext()) {
-					i++;
-				}
+				i++;
 			}
 			return false;
 		}
@@ -253,7 +248,7 @@ public class RevampStructure {
 
 	public ArrayList<BlockInstance> getTileEntities(World world, Vec3i origin, Direction dir) {
 		ArrayList<BlockInstance> tiles = new ArrayList();
-		Iterator var5 = this.data.getList("Blocks").iterator();
+		Iterator var5 = this.data.getList("TileEntities").iterator();
 
 		while (var5.hasNext()) {
 			Tag<?> tag = (Tag) var5.next();
