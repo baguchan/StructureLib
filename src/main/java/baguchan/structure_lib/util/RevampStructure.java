@@ -3,6 +3,7 @@ package baguchan.structure_lib.util;
 import com.mojang.nbt.*;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.entity.TileEntity;
+import net.minecraft.core.util.helper.MathHelper;
 import net.minecraft.core.world.World;
 
 import java.io.IOException;
@@ -109,7 +110,7 @@ public class RevampStructure {
 				tileBlocks = (BlockInstance) var8.next();
 				world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
 
-				CompoundTag compoundTag = getTileEntitiesData(i);
+				CompoundTag compoundTag = getTileEntitiesData(MathHelper.clamp(i, 0, tiles.size() - 1));
 				if (compoundTag.containsKey("id")) {
 					TileEntity tileentity = TileEntity.createAndLoadEntity(compoundTag);
 					if (tileentity != null) {
