@@ -64,7 +64,7 @@ public class RevampStructure {
 			tileBlocks = (BlockInstance) var8.next();
 			world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
 
-			CompoundTag compoundTag = getTileEntitiesData(i);
+			CompoundTag compoundTag = getTileEntitiesData(MathHelper.clamp(i, 0, tiles.size() - 1));
 			if (compoundTag.containsKey("id")) {
 				TileEntity tileentity = TileEntity.createAndLoadEntity(compoundTag);
 				if (tileentity != null) {
@@ -74,7 +74,9 @@ public class RevampStructure {
 					world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
 				}
 			}
+			if (var8.hasNext()) {
 			i++;
+			}
 		}
 
 		return true;
@@ -120,7 +122,9 @@ public class RevampStructure {
 						world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
 					}
 				}
-				i++;
+				if (var8.hasNext()) {
+					i++;
+				}
 			}
 			return false;
 		}
