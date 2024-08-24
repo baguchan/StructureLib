@@ -38,6 +38,32 @@ public class RevampStructure {
 	public boolean placeStructure(World world, int originX, int originY, int originZ) {
 		Vec3i origin = new Vec3i(originX, originY, originZ);
 		Vec3i originSize = new Vec3i(originX + this.getSizeX(), originY + this.getSizeY(), originZ + this.getSizeZ());
+
+		ArrayList<BlockInstance> tiles = this.getTileEntities(origin);
+
+		Iterator var8 = tiles.iterator();
+
+		BlockInstance tileBlocks;
+		int i = 0;
+
+		while (var8.hasNext()) {
+			tileBlocks = (BlockInstance) var8.next();
+			world.setBlockAndMetadata(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
+
+			CompoundTag compoundTag = getTileEntitiesData(i);
+			if (compoundTag.containsKey("id")) {
+				TileEntity tileentity = TileEntity.createAndLoadEntity(compoundTag);
+				if (tileentity != null) {
+					tileentity.x = tileBlocks.pos.x;
+					tileentity.y = tileBlocks.pos.y;
+					tileentity.z = tileBlocks.pos.z;
+					tiles.get(i).tile = tileentity;
+					world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
+				}
+			}
+			i++;
+		}
+
 		ArrayList<BlockInstance> blocks = this.getBlocks(origin);
 		Iterator var7 = blocks.iterator();
 
@@ -49,32 +75,9 @@ public class RevampStructure {
 
 		while (var7.hasNext()) {
 			block = (BlockInstance) var7.next();
-			world.setBlockAndMetadataWithNotify(block.pos.x, block.pos.y, block.pos.z, block.block.id, block.meta);
+			world.setBlockAndMetadata(block.pos.x, block.pos.y, block.pos.z, block.block.id, block.meta);
 		}
 
-		ArrayList<BlockInstance> tiles = this.getTileEntities(origin);
-
-		Iterator var8 = tiles.iterator();
-
-		BlockInstance tileBlocks;
-		int i = 0;
-
-		while (var8.hasNext()) {
-			tileBlocks = (BlockInstance) var8.next();
-			world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
-
-			CompoundTag compoundTag = getTileEntitiesData(i);
-			if (compoundTag.containsKey("id")) {
-				TileEntity tileentity = TileEntity.createAndLoadEntity(compoundTag);
-				if (tileentity != null) {
-					tileentity.x = tileBlocks.pos.x;
-					tileentity.y = tileBlocks.pos.y;
-					tileentity.z = tileBlocks.pos.z;
-					world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
-				}
-			}
-			i++;
-		}
 
 		return true;
 	}
@@ -95,7 +98,7 @@ public class RevampStructure {
 			BlockInstance block;
 			while (var7.hasNext()) {
 				block = (BlockInstance) var7.next();
-				world.setBlockAndMetadataWithNotify(block.pos.x, block.pos.y, block.pos.z, block.block.id, block.meta);
+				world.setBlockAndMetadata(block.pos.x, block.pos.y, block.pos.z, block.block.id, block.meta);
 			}
 
 			ArrayList<BlockInstance> tiles = this.getTileEntities(world, origin, dir);
@@ -107,7 +110,7 @@ public class RevampStructure {
 
 			while (var8.hasNext()) {
 				tileBlocks = (BlockInstance) var8.next();
-				world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
+				world.setBlockAndMetadata(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
 
 				CompoundTag compoundTag = getTileEntitiesData(i);
 				if (compoundTag.containsKey("id")) {
@@ -116,6 +119,7 @@ public class RevampStructure {
 						tileentity.x = tileBlocks.pos.x;
 						tileentity.y = tileBlocks.pos.y;
 						tileentity.z = tileBlocks.pos.z;
+						tiles.get(i).tile = tileentity;
 						world.setBlockTileEntity(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileentity);
 					}
 				}
