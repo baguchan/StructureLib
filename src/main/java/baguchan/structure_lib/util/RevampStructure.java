@@ -39,6 +39,20 @@ public class RevampStructure {
 		Vec3i origin = new Vec3i(originX, originY, originZ);
 		Vec3i originSize = new Vec3i(originX + this.getSizeX(), originY + this.getSizeY(), originZ + this.getSizeZ());
 
+		ArrayList<BlockInstance> blocks = this.getBlocks(origin);
+		Iterator var7 = blocks.iterator();
+
+		BlockInstance block;
+
+		if (this.replaceBlocks) {
+			makeEmptySpaceWithRotate(world, origin, originSize);
+		}
+
+		while (var7.hasNext()) {
+			block = (BlockInstance) var7.next();
+			world.setBlockAndMetadataWithNotify(block.pos.x, block.pos.y, block.pos.z, block.block.id, block.meta);
+		}
+
 		ArrayList<BlockInstance> tiles = this.getTileEntities(origin);
 
 		Iterator var8 = tiles.iterator();
@@ -48,7 +62,7 @@ public class RevampStructure {
 
 		while (var8.hasNext()) {
 			tileBlocks = (BlockInstance) var8.next();
-			world.setBlockAndMetadata(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
+			world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
 
 			CompoundTag compoundTag = getTileEntitiesData(i);
 			if (compoundTag.containsKey("id")) {
@@ -64,18 +78,14 @@ public class RevampStructure {
 			i++;
 		}
 
-		ArrayList<BlockInstance> blocks = this.getBlocks(origin);
-		Iterator var7 = blocks.iterator();
+		ArrayList<BlockInstance> decoration = this.getDecorations(origin);
 
-		BlockInstance block;
+		Iterator var9 = decoration.iterator();
 
-		if (this.replaceBlocks) {
-			makeEmptySpaceWithRotate(world, origin, originSize);
-		}
-
-		while (var7.hasNext()) {
-			block = (BlockInstance) var7.next();
-			world.setBlockAndMetadata(block.pos.x, block.pos.y, block.pos.z, block.block.id, block.meta);
+		BlockInstance decorations;
+		while (var9.hasNext()) {
+			decorations = (BlockInstance) var9.next();
+			world.setBlockAndMetadataWithNotify(decorations.pos.x, decorations.pos.y, decorations.pos.z, decorations.block.id, decorations.meta);
 		}
 
 
@@ -98,7 +108,7 @@ public class RevampStructure {
 			BlockInstance block;
 			while (var7.hasNext()) {
 				block = (BlockInstance) var7.next();
-				world.setBlockAndMetadata(block.pos.x, block.pos.y, block.pos.z, block.block.id, block.meta);
+				world.setBlockAndMetadataWithNotify(block.pos.x, block.pos.y, block.pos.z, block.block.id, block.meta);
 			}
 
 			ArrayList<BlockInstance> tiles = this.getTileEntities(world, origin, dir);
@@ -110,7 +120,7 @@ public class RevampStructure {
 
 			while (var8.hasNext()) {
 				tileBlocks = (BlockInstance) var8.next();
-				world.setBlockAndMetadata(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
+				world.setBlockAndMetadataWithNotify(tileBlocks.pos.x, tileBlocks.pos.y, tileBlocks.pos.z, tileBlocks.block.id, tileBlocks.meta);
 
 				CompoundTag compoundTag = getTileEntitiesData(i);
 				if (compoundTag.containsKey("id")) {
@@ -125,6 +135,17 @@ public class RevampStructure {
 				}
 				i++;
 			}
+
+			ArrayList<BlockInstance> decoration = this.getDecorations(origin, dir);
+
+			Iterator var9 = decoration.iterator();
+
+			BlockInstance decorations;
+			while (var9.hasNext()) {
+				decorations = (BlockInstance) var9.next();
+				world.setBlockAndMetadataWithNotify(decorations.pos.x, decorations.pos.y, decorations.pos.z, decorations.block.id, decorations.meta);
+			}
+
 			return false;
 		}
 	}
@@ -260,12 +281,12 @@ public class RevampStructure {
 			Vec3i pos = (new Vec3i(blockTag.getCompound("pos"))).rotate(origin, dir);
 			int meta = blockTag.getInteger("meta");
 			if (meta != -1) {
-				if (dir == Direction.Z_NEG) {
+				if (dir.shiftAxis() == Direction.Z_NEG) {
 					meta = Direction.getDirectionFromSide(meta).getOpposite().getSideNumber();
-				} else if (dir == Direction.X_NEG || dir == Direction.X_POS) {
+				} else if (dir.shiftAxis() == Direction.X_NEG || dir.shiftAxis() == Direction.X_POS) {
 					Direction blockDir = Direction.getDirectionFromSide(meta);
 					blockDir = blockDir != Direction.X_NEG && blockDir != Direction.X_POS ? blockDir.rotate(1) : blockDir.rotate(1).getOpposite();
-					meta = dir == Direction.X_NEG ? blockDir.getSideNumber() : blockDir.getOpposite().getSideNumber();
+					meta = dir.shiftAxis() == Direction.X_NEG ? blockDir.getSideNumber() : blockDir.getOpposite().getSideNumber();
 				}
 			}
 
@@ -324,15 +345,14 @@ public class RevampStructure {
 			Vec3i pos = (new Vec3i(blockTag.getCompound("pos"))).rotate(origin, dir);
 			int meta = blockTag.getInteger("meta");
 			if (meta != -1) {
-				if (dir == Direction.Z_NEG) {
+				if (dir.shiftAxis() == Direction.Z_NEG) {
 					meta = Direction.getDirectionFromSide(meta).getOpposite().getSideNumber();
-				} else if (dir == Direction.X_NEG || dir == Direction.X_POS) {
+				} else if (dir.shiftAxis() == Direction.X_NEG || dir.shiftAxis() == Direction.X_POS) {
 					Direction blockDir = Direction.getDirectionFromSide(meta);
 					blockDir = blockDir != Direction.X_NEG && blockDir != Direction.X_POS ? blockDir.rotate(1) : blockDir.rotate(1).getOpposite();
-					meta = dir == Direction.X_NEG ? blockDir.getSideNumber() : blockDir.getOpposite().getSideNumber();
+					meta = dir.shiftAxis() == Direction.X_NEG ? blockDir.getSideNumber() : blockDir.getOpposite().getSideNumber();
 				}
 			}
-
 			int id = getBlockId(blockTag);
 			Block block = Block.getBlock(id);
 			BlockInstance blockInstance = new BlockInstance(block, pos, meta, (TileEntity) null);
@@ -366,9 +386,9 @@ public class RevampStructure {
 		return 0;
 	}
 
-	public ArrayList<BlockInstance> getSubstitutions() {
+	public ArrayList<BlockInstance> getDecorations() {
 		ArrayList<BlockInstance> tiles = new ArrayList();
-		Iterator var2 = this.data.getCompound("Substitutions").getValues().iterator();
+		Iterator var2 = this.data.getCompound("Decorations").getValues().iterator();
 
 		while (var2.hasNext()) {
 			Tag<?> tag = (Tag) var2.next();
@@ -384,9 +404,9 @@ public class RevampStructure {
 		return tiles;
 	}
 
-	public ArrayList<BlockInstance> getSubstitutions(Vec3i origin) {
+	public ArrayList<BlockInstance> getDecorations(Vec3i origin) {
 		ArrayList<BlockInstance> tiles = new ArrayList();
-		Iterator var3 = this.data.getCompound("Substitutions").getValues().iterator();
+		Iterator var3 = this.data.getCompound("Decorations").getValues().iterator();
 
 		while (var3.hasNext()) {
 			Tag<?> tag = (Tag) var3.next();
@@ -402,9 +422,9 @@ public class RevampStructure {
 		return tiles;
 	}
 
-	public ArrayList<BlockInstance> getSubstitutions(Vec3i origin, Direction dir) {
+	public ArrayList<BlockInstance> getDecorations(Vec3i origin, Direction dir) {
 		ArrayList<BlockInstance> tiles = new ArrayList();
-		Iterator var4 = this.data.getCompound("Substitutions").getValues().iterator();
+		Iterator var4 = this.data.getCompound("Decorations").getValues().iterator();
 
 		while (var4.hasNext()) {
 			Tag<?> tag = (Tag) var4.next();
@@ -412,12 +432,12 @@ public class RevampStructure {
 			Vec3i pos = (new Vec3i(tileEntity.getCompound("pos"))).rotate(origin, dir);
 			int meta = tileEntity.getInteger("meta");
 			if (meta != -1) {
-				if (dir == Direction.Z_NEG) {
+				if (dir.shiftAxis() == Direction.Z_NEG) {
 					meta = Direction.getDirectionFromSide(meta).getOpposite().getSideNumber();
-				} else if (dir == Direction.X_NEG || dir == Direction.X_POS) {
+				} else if (dir.shiftAxis() == Direction.X_NEG || dir.shiftAxis() == Direction.X_POS) {
 					Direction blockDir = Direction.getDirectionFromSide(meta);
 					blockDir = blockDir != Direction.X_NEG && blockDir != Direction.X_POS ? blockDir.rotate(1) : blockDir.rotate(1).getOpposite();
-					meta = dir == Direction.X_NEG ? blockDir.getSideNumber() : blockDir.getOpposite().getSideNumber();
+					meta = dir.shiftAxis() == Direction.X_NEG ? blockDir.getSideNumber() : blockDir.getOpposite().getSideNumber();
 				}
 			}
 

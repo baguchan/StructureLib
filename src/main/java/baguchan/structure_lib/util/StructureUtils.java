@@ -6,6 +6,7 @@ import com.mojang.nbt.ListTag;
 import com.mojang.nbt.NbtIo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.block.Block;
+import net.minecraft.core.block.material.Material;
 import net.minecraft.core.util.helper.MathHelper;
 import net.minecraft.core.world.World;
 
@@ -52,6 +53,7 @@ public class StructureUtils {
 		List<BlockInstance> blocks = addBlocks(world, origin, originMax);
 		ListTag blocksTag = new ListTag();
 		ListTag tileTag = new ListTag();
+		ListTag decorationTag = new ListTag();
 		blocks.forEach(blockInstance -> {
 			if (blockInstance.tile != null) {
 				CompoundTag compoundTag1 = new CompoundTag();
@@ -64,6 +66,17 @@ public class StructureUtils {
 				compoundTag1.put("pos", posTag);
 				compoundTag1.put("tile_data", tileData);
 				tileTag.addTag(compoundTag1);
+			} else if (blockInstance.block.blockMaterial == Material.decoration) {
+				CompoundTag compoundTag1 = new CompoundTag();
+				CompoundTag posTag = new CompoundTag();
+				CompoundTag tileData = new CompoundTag();
+				blockInstance.tile.writeToNBT(tileData);
+				blockInstance.pos.writeToNBT(posTag);
+				compoundTag1.putString("id", blockInstance.block.getKey());
+				compoundTag1.putInt("meta", blockInstance.meta);
+				compoundTag1.put("pos", posTag);
+				compoundTag1.put("tile_data", tileData);
+				decorationTag.addTag(compoundTag1);
 			} else {
 				CompoundTag compoundTag1 = new CompoundTag();
 				CompoundTag posTag = new CompoundTag();
@@ -76,6 +89,7 @@ public class StructureUtils {
 		});
 		compoundTag.put("Blocks", blocksTag);
 		compoundTag.put("TileEntities", tileTag);
+		compoundTag.put("Decorations", decorationTag);
 		compoundTag.putInt("SizeX", (int) MathHelper.abs(originMax.x - origin.x) + 1);
 		compoundTag.putInt("SizeY", (int) MathHelper.abs(originMax.y - origin.y) + 1);
 		compoundTag.putInt("SizeZ", (int) MathHelper.abs(originMax.z - origin.z) + 1);
@@ -138,25 +152,5 @@ public class StructureUtils {
 
 	}
 
-
-	public static Vec3i transform(Vec3i p_74594_, Direction p_74596_, Vec3i p_74597_) {
-		int i = p_74594_.x;
-		int j = p_74594_.y;
-		int k = p_74594_.z;
-		boolean flag = false;
-
-		int l = p_74597_.x;
-		int i1 = p_74597_.z;
-		switch (Direction.getOriginalDirection(p_74596_)) {
-			case WEST:
-				return new Vec3i(l - i1 + k, j, l + i1 - i);
-			case EAST:
-				return new Vec3i(l + i1 - k, j, i1 - l + i);
-			case SOUTH:
-				return new Vec3i(l + l - i, j, i1 + i1 - k);
-			default:
-				return flag ? new Vec3i(i, j, k) : p_74594_;
-		}
-	}
 
 }

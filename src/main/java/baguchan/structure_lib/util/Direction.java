@@ -118,6 +118,20 @@ public enum Direction {
 		return Side.getSideById(side);
 	}
 
+	public Direction shiftAxis() {
+		switch (this) {
+			case X_POS:
+				return Direction.Z_POS;
+			case X_NEG:
+				return Direction.Z_NEG;
+			case Z_POS:
+				return Direction.X_POS;
+			case Z_NEG:
+				return Direction.X_NEG;
+		}
+		return this;
+	}
+
 	public Vec3d getMinecraftVec() {
 		return Vec3d.createVectorHelper(vec.x, vec.y, vec.z);
 	}
