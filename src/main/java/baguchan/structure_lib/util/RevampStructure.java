@@ -101,7 +101,7 @@ public class RevampStructure {
 			ArrayList<BlockInstance> blocks = this.getBlocks(origin, dir);
 			Iterator var7 = blocks.iterator();
 			Vec3i rotate = (new Vec3i(this.getSizeX(), this.getSizeY(), this.getSizeZ()).rotate(origin, dir));
-			if (this.replaceBlocks) {
+			if (this.placeAir) {
 				this.makeEmptySpaceWithRotate(world, origin, rotate);
 			}
 
@@ -171,9 +171,9 @@ public class RevampStructure {
 			origin2.z = rotate2.z;
 			rotate2.z = temp;
 		}
-		for (int x = origin2.x; x <= rotate2.x; x++) {
-			for (int y = origin2.y; y <= rotate2.y; y++) {
-				for (int z = origin2.z; z <= rotate2.z; z++) {
+		for (int x = origin2.x; x < rotate2.x; x++) {
+			for (int y = origin2.y; y < rotate2.y; y++) {
+				for (int z = origin2.z; z < rotate2.z; z++) {
 					world.setBlock(x, y, z, 0);
 				}
 			}
