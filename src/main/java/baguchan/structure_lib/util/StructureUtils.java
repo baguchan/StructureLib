@@ -90,9 +90,9 @@ public class StructureUtils {
 		compoundTag.put("Blocks", blocksTag);
 		compoundTag.put("TileEntities", tileTag);
 		compoundTag.put("Decorations", decorationTag);
-		compoundTag.putInt("SizeX", (int) MathHelper.abs(originMax.x - origin.x) + 1);
-		compoundTag.putInt("SizeY", (int) MathHelper.abs(originMax.y - origin.y) + 1);
-		compoundTag.putInt("SizeZ", (int) MathHelper.abs(originMax.z - origin.z) + 1);
+		compoundTag.putInt("SizeX", MathHelper.floor_float(MathHelper.abs(originMax.x - origin.x)));
+		compoundTag.putInt("SizeY", MathHelper.floor_float(MathHelper.abs(originMax.y - origin.y)));
+		compoundTag.putInt("SizeZ", MathHelper.floor_float(MathHelper.abs(originMax.z - origin.z)));
 		RevampStructure structure = new RevampStructure(modid, name, compoundTag, false, true);
 		saveToNbt(Minecraft.getMinecraft(Minecraft.class).getMinecraftDir(), name, structure);
 		return true;
